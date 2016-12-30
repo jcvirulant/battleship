@@ -6,14 +6,12 @@ import os
 
 class Game:
 
-    SHIP_DICT = {"Aircraft Carrier": 5,
-                "Battleship": 4,
-                "Submarine": 3,
-                "Cruiser": 3,
-                "Patrol Boat": 2}
-
-
-
+    SHIP_DICT = {
+        "Aircraft Carrier": 5,
+        "Battleship": 4,
+        "Submarine": 3,
+        "Cruiser": 3,
+        "Patrol Boat": 2}
 
     def __init__(self):
         self.setup()
@@ -29,14 +27,12 @@ class Game:
         # Game loop
         while True:
 
-          self.player1_turn()
-          self.cleanup()
-          self.player2_turn()
-          self.cleanup()
-
+            self.player1_turn()
+            self.cleanup()
+            self.player2_turn()
+            self.cleanup()
 
     def validate_attack_row(self):
-
         try:
             self.attack_row = int(input('Row Number: ')) - 1
         except ValueError:
@@ -94,12 +90,11 @@ class Game:
             print("Thanks for playing!")
             sys.exit()
 
-
     def player1_turn(self):
         # prompt player for coordinates - requires only one instance of player
-         print("\n"+"="*20)
-         print('You are up Commander {}! Try to sink your opponents ships!'.format(self.player1.name))
-         print('\n')
+        print("\n"+"="*20)
+        print('You are up Commander {}! Try to sink your opponents ships!'.format(self.player1.name))
+        print('\n')
         # Display command board
         print("Commander {}, your Command Center\n".format(self.player1.name))
         self.player1.command.print_board(self.player1.command.board)
@@ -145,12 +140,11 @@ class Game:
             # record attack for validation against future attacks
             self.player1.attack_list.append((self.attack_row, self.attack_col))
 
-
     def player2_turn(self):
         # prompt player for coordinates
-         print("\n"+"="*20)
-         print('You are up Commander {}! Try to sink your opponents ships!'.format(self.player2.name))
-         print('\n')
+        print("\n"+"="*20)
+        print('You are up Commander {}! Try to sink your opponents ships!'.format(self.player2.name))
+        print('\n')
         # Display command board
         print("Commander {}, your Command Center\n".format(self.player2.name))
         self.player2.command.print_board(self.player2.command.board)
