@@ -1,32 +1,5 @@
-
-
-
-# Build Board
-    # create an instance of the board with particular attributes
-        # BOARD_SIZE
-        # What types of markers are available for the board
-        # Create a list of tuples for a cartesian-like grid of the
-# Place Ships
-  # Ask for what kind of ship or cycle through them
-  # Ask if ship should be HORIZONTAL_SHIP or VERTICAL_SHIP
-  # Display Ship Placement
-  # Ask to Place Next Ship... If the Ship Over Laps Prompt Again
-  # Once all ships are placed, Prompt the next Player to place ships
-  # Roll Die to see you goes first
-  # Prompt winner to go first
-  # Prompt player to pick where to fire
-    # Validate attack - make sure that the location has not already been fired upon
-        # if attack is valid check whether or not the attack is a hit or a MISS
-            #If the attack is a miss, report miss, display updated boards
-            # If attack is a hit, report hit, display updated boards
-        # update boards for player
-    # ask if player is ready continue to next players turn if yes, clear screen
-    # Display updated board with previous hit/miss info
-    #
-
-
-
 class Board:
+
     BOARD_SIZE = 10
     VERTICAL_SHIP = '|'
     HORIZONTAL_SHIP = '-'
@@ -40,7 +13,6 @@ class Board:
                 ("Cruiser", 3),
                 ("Patrol Boat", 2)
                 ]
-
 
 
     def __init__(self, **kwargs):
@@ -60,10 +32,56 @@ class Board:
             print(str(row_num).rjust(2) + " " + (" ".join(row)))
             row_num += 1
 
+    def validate_row(self):
+
+        try:
+            self.placement_row = int(input('Row Number: ')) - 1
+        except ValueError:
+            os.system('cls')
+            print('You input an improper value. Please enter an integer between 1 and 10.')
+            self.validate_row()
+        else:
+            if self.placement_row in range(10):
+                return self.placement_row
+            else:
+                os.system('cls')
+                print('Your input was outside the range of the possible inputs. Please enter an integer between 1 and 10.')
+                self.validate_row()
+
+    def validate_col(self):
+        try:
+            self.placement_col = input('In what Column? ').upper()
+            self.placement_col = ord(self.placement_col) - 65
+        except TypeError:
+            os.system('cls')
+            print('Your input was the wrong type. Please choose a letter from A - J.')
+            self.validate_col()
+        else:
+            if self.placement_col in range(10):
+                return self.placement_col
+            else:
+                os.system('cls')
+                print('Your input was outside the range of the possible inputs. Please choose column A - J.')
+                self.validate_col()
+
+    def validate_or(self):
+
+        self.orientation = input('[H]orizontal of [V]ertical? ').lower()
+
+        if self.orientation == 'h': # Not sure why I couldn't use an "or" statement
+            return self.orientation
+        elif self.orientation == 'v':
+            return self.orientation
+        else:
+            os.system('cls')
+            print('Please choose H for Horizontal or V for Vertical.')
+            self.validate_or()
 
 class Command(Board):
 
+
     def __init__(self, **kwargs):
+        self.ship_coordinates_dict = {}
         self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
         self.print_board(self.board)
 
@@ -76,44 +94,44 @@ class Ally(Board):
         self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
         self.print_board(self.board)
         self.place_ships()
-            # self.ship_list = [self.placement_row - 1)for i in range(0, value)
+
 
         for key, value in kwargs.items():
           setattr(self, key, value)
 
     def place_ships(self):
-        self.ship_coordinates_dict = {"Aircraft Carrier": [], "Battleship": [], "Submarine": [], "Cruiser": [], "Patrol Boat": []}
+
+        self.ship_coordinates_dict = {}
         self.ship_coordinates = list()
+
         for key, value in self.SHIP_INFO:
+            print('In where would you like to place your {}?\n '.format(key))
+            self.validate_row()
+            self.validate_col()
+            self.validate_or()
 
-            self.placement_row = int(input('In what row would you like to place your {}? '.format(key))) - 1
-            self.placement_col = input('In what Column? ').upper()
-            self.placement_col = ord(self.placement_col) - 65
-            if input('[H]orizontal of [V]ertical? ').lower() == 'h':
-                for i in range(0, value):
-                    self.board[self.placement_row][self.placement_col + i] = self.HORIZONTAL_SHIP
-                    if (self.placement_row, self.placement_col + i) in self.ship_coordinates:
-                        print('Your ship placement is overlapping, please pick new coordinates.')
-                        self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
-                        self.place_ships()
-                    else:
-                        self.ship_coordinates_dict[key].append((self.placement_row, self.placement_col + i))
-                        self.ship_coordinates.append((self.placement_row, self.placement_col + i))
-                        continue
+            if self.orientation == 'h':
+                h = 1
+                v = 0
             else:
-                for i in range(0, value):
-                    self.board[self.placement_row + i][self.placement_col] = self.VERTICAL_SHIP
-                    if (self.placement_row + i, self.placement_col) in self.ship_coordinates:
-                        print('Your ship placement is overlapping, please pick new coordinates.')
-                        self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
-                        self.place_ships()
-                    else:
-                        self.ship_coordinates_dict[key].append((self.placement_row + i, self.placement_col))
-                        self.ship_coordinates.append((self.placement_row + i, self.placement_col))
-                        continue
-            self.print_board(self.board)
-            print(self.ship_coordinates)
-            print(self.ship_coordinates_dict)
+                h = 0
+                v = 1
 
-    # def validate(self, item):
-    #     if item in validate_list
+            for i in range(0, value):
+                try:
+                    self.board[self.placement_row + (v*i)][self.placement_col + (h*i)] = (self.HORIZONTAL_SHIP * h) + (self.VERTICAL_SHIP * v)
+                except IndexError:
+                    print('Make sure to pick coordinates that account for the length of the ships.\n')
+                    print(self.SHIP_INFO)
+                    self.place_ships()
+                if (self.placement_row + (v*i), self.placement_col + (h*i)) in self.ship_coordinates:
+                    print('Your ship placement is overlapping, please pick new coordinates.')
+                    self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
+                    self.place_ships()
+                else:
+                    self.ship_coordinates_dict[self.placement_row + (v*i), self.placement_col + (h*i)] = key
+                    self.ship_coordinates.append((self.placement_row + (v*i), self.placement_col + (h*i)))
+                    continue
+
+            self.print_board(self.board)
+
