@@ -3,8 +3,8 @@ from grid import Board
 from grid import Command
 import os
 
-class Player:
 
+class Player:
 
     def __init__(self):
         self.attack_list = list()
