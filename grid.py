@@ -7,18 +7,18 @@ class Board:
     MISS = '.'
     HIT = '*'
     SUNK = '#'
-    SHIP_INFO = [("Aircraft Carrier", 5),
-                ("Battleship", 4),
-                ("Submarine", 3),
-                ("Cruiser", 3),
-                ("Patrol Boat", 2)
+    SHIP_INFO = [
+        ("Aircraft Carrier", 5),
+        ("Battleship", 4),
+        ("Submarine", 3),
+        ("Cruiser", 3),
+        ("Patrol Boat", 2)
                 ]
-
 
     def __init__(self, **kwargs):
 
         for key, value in kwargs.items():
-          setattr(self, key, value)
+            setattr(self, key, value)
 
     def print_board_heading(self):
         print("   " + " ".join([chr(c) for c in range(ord('A'), ord('A') + self.BOARD_SIZE)]))
@@ -67,8 +67,8 @@ class Board:
     def validate_or(self):
 
         self.orientation = input('[H]orizontal of [V]ertical? ').lower()
-
-        if self.orientation == 'h': # Not sure why I couldn't use an "or" statement
+        # Not sure why I couldn't use an "or" statement
+        if self.orientation == 'h':
             return self.orientation
         elif self.orientation == 'v':
             return self.orientation
@@ -77,8 +77,8 @@ class Board:
             print('Please choose H for Horizontal or V for Vertical.')
             self.validate_or()
 
-class Command(Board):
 
+class Command(Board):
 
     def __init__(self, **kwargs):
         self.ship_coordinates_dict = {}
@@ -86,7 +86,8 @@ class Command(Board):
         self.print_board(self.board)
 
         for key, value in kwargs.items():
-          setattr(self, key, value)
+            setattr(self, key, value)
+
 
 class Ally(Board):
 
@@ -95,15 +96,12 @@ class Ally(Board):
         self.print_board(self.board)
         self.place_ships()
 
-
         for key, value in kwargs.items():
-          setattr(self, key, value)
+            setattr(self, key, value)
 
     def place_ships(self):
-
         self.ship_coordinates_dict = {}
         self.ship_coordinates = list()
-
         for key, value in self.SHIP_INFO:
             print('In where would you like to place your {}?\n '.format(key))
             self.validate_row()
@@ -134,4 +132,3 @@ class Ally(Board):
                     continue
 
             self.print_board(self.board)
-
