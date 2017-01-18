@@ -1,3 +1,5 @@
+import os
+
 class Board:
 
     BOARD_SIZE = 10
@@ -37,31 +39,35 @@ class Board:
         try:
             self.placement_row = int(input('Row Number: ')) - 1
         except ValueError:
-            os.system('cls')
+            os.system('clear')
             print('You input an improper value. Please enter an integer between 1 and 10.')
+            self.print_board(self.board)
             self.validate_row()
         else:
             if self.placement_row in range(10):
                 return self.placement_row
             else:
-                os.system('cls')
+                os.system('clear')
                 print('Your input was outside the range of the possible inputs. Please enter an integer between 1 and 10.')
+                self.print_board(self.board)
                 self.validate_row()
 
     def validate_col(self):
         try:
-            self.placement_col = input('In what Column? ').upper()
+            self.placement_col = input('In what Column? ').upper().strip()
             self.placement_col = ord(self.placement_col) - 65
         except TypeError:
-            os.system('cls')
+            os.system('clear')
             print('Your input was the wrong type. Please choose a letter from A - J.')
+            self.print_board(self.board)
             self.validate_col()
         else:
             if self.placement_col in range(10):
                 return self.placement_col
             else:
-                os.system('cls')
+                os.system('clear')
                 print('Your input was outside the range of the possible inputs. Please choose column A - J.')
+                self.print_board(self.board)
                 self.validate_col()
 
     def validate_or(self):
@@ -73,7 +79,7 @@ class Board:
         elif self.orientation == 'v':
             return self.orientation
         else:
-            os.system('cls')
+            os.system('clear')
             print('Please choose H for Horizontal or V for Vertical.')
             self.validate_or()
 
@@ -119,12 +125,17 @@ class Ally(Board):
                 try:
                     self.board[self.placement_row + (v*i)][self.placement_col + (h*i)] = (self.HORIZONTAL_SHIP * h) + (self.VERTICAL_SHIP * v)
                 except IndexError:
-                    print('Make sure to pick coordinates that account for the length of the ships.\n')
+                    os.system('clear')
+                    print('Your ship placement did not fit on the board.\n\nMake sure to pick coordinates that account for the length of the ships.\n')
                     print(self.SHIP_INFO)
+                    print('\n')
+                    self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
+                    self.print_board(self.board)
                     self.place_ships()
                 if (self.placement_row + (v*i), self.placement_col + (h*i)) in self.ship_coordinates:
                     print('Your ship placement is overlapping, please pick new coordinates.')
                     self.board = [[self.EMPTY]*self.BOARD_SIZE for _ in range(self.BOARD_SIZE)]
+                    self.print_board(self.board)
                     self.place_ships()
                 else:
                     self.ship_coordinates_dict[self.placement_row + (v*i), self.placement_col + (h*i)] = key
