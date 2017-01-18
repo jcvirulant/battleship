@@ -10,10 +10,16 @@ class Player:
         self.attack_list = list()
         # prompt for Names
         self.name = input('Name: ')
-        print("{}, Welcome to your ALLY WATERS! Here you will place your ships and record your opponents attacks.".format(self.name))
+        print("{}, Welcome to your ALLY WATERS! Here you will place your"
+              "ships and record your opponents attacks.".format(self.name)
+              )
         self.ally = Ally()
         pause = input("Continue?: press Enter: ")
-        print("{}, this is your command center. Here you will order your ships to attack ENEMY WATERS.\nUnfortunately, your opponent has jammed your radar and you must use logic and cunning to defeat your enemy".format(self.name))
-        self.command = Command()
+        print("{}, this is your com center. Here you will order your ships"
+              "to attack ENEMY WATERS.\nUnfortunately, your opponent has"
+              "jammed your radar and you must use logic and cunning to defeat"
+              "your enemy".format(self.name)
+              )
+        self.com = Command()
         pause = input("Is your opponent ready? press Enter: ")
-        os.system('cls')
+        os.system('clear')
