@@ -12,9 +12,9 @@ class Board:
     SUNK = '#'
     SHIP_INFO = [
         ("Aircraft Carrier", 5),
-        ("Battleship", 4),
-        ("Submarine", 3),
-        ("Cruiser", 3),
+        # ("Battleship", 4),
+        # ("Submarine", 3),
+        # ("Cruiser", 3),
         ("Patrol Boat", 2)
                 ]
 
@@ -58,7 +58,7 @@ class Board:
 
     def val_col(self):
         try:
-            self.pc = input('In what Column? ').upper().strip()
+            self.pc = input('Column Letter: ').upper().strip()
             self.pc = ord(self.pc) - 65
         except TypeError:
             os.system('clear')
@@ -117,7 +117,7 @@ class Ally(Board):
         self.scd = {}
         self.ship_coordinates = list()
         for key, value in self.SHIP_INFO:
-            print('In where would you like to place your {}?\n '.format(key))
+            print('\nWhere would you like to place your {}?\n '.format(key))
             self.val_row()
             self.val_col()
             self.val_or()
@@ -158,5 +158,6 @@ class Ally(Board):
                     self.ship_coordinates.append(
                         (self.pr + (v*i), self.pc + (h*i)))
                     continue
-
+            os.system('clear')
+            print('\n')
             self.print_board(self.board)
