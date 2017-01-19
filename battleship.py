@@ -4,7 +4,7 @@ import sys
 import os
 
 
-# scd = ship_coordinates_dict
+# scd = ship_coordinates_dict - This is used to keep track of the ship names and where th
 # ar/ac = attack_row/column
 # pr/pc = placement_row/column
 
