@@ -28,7 +28,7 @@ class Game:
         print("Welcome to BATTLESHIP!!\n")
         # Create two players for Game
         self.players = [Player(), Player()]
-
+        index = 0
         # Game loop
         while True:
 
@@ -68,7 +68,9 @@ class Game:
             # report to player the outcome of the attack and record for further reference
             print("Commander {}, you hit {}'s ship!".format(p1.name, p2.name))
             # update com ship coordinates for cleanup
-            p1.com.scd[(p1.ar, p1.ac)] = p2.ally.scd[p1.ar, p1.ac]
+            p1.com.scd[(p1.ar, p1.ac)] = p2.ally.scd[(p1.ar, p1.ac)]
+            print(p1.com.scd)
+            print(p2.ally.scd)
             # update com board
             p1.com.board[p1.ar][p1.ac] = p1.com.HIT
             # update opponent ally board
@@ -79,10 +81,14 @@ class Game:
             pause = input("Continue?: press Enter: ")
             os.system('clear')
             # new player prompt
-            if sum(1 for p2.ally.scd[p1.ar, p1.ac] in p1.com.scd.values()) == self.SHIP_DICT[p2.ally.scd[p1.ar, p1.ac]]:
-                pause = input("Commander {}, the Pirate {} SUNK your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
-            else:
-                pause = input("Commander {}, the Pirate {} hit your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
+            # print(p1.com.scd[(p1.ar, p1.ac)])
+            # print(p1.com.scd.values())
+            # print(self.SHIP_DICT[p2.ally.scd[p1.ar, p1.ac]])
+            # print(sum(1 for p1.com.scd[(p1.ar, p1.ac)] in p1.com.scd.values()))
+            # if sum(1 for p1.com.scd[(p1.ar, p1.ac)] in p1.com.scd.values()) == self.SHIP_DICT[p2.ally.scd[p1.ar, p1.ac]]:
+            #     pause = input("Commander {}, the Pirate {} SUNK your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
+            # else:
+            #     pause = input("Commander {}, the Pirate {} hit your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
         else:
             print("Commander {}, your attack missed!\n".format(p1.name))
             p1.com.board[p1.ar][p1.ac] = p1.com.MISS

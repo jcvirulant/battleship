@@ -22,7 +22,6 @@ class Player:
               " your enemy\n".format(self.name)
               )
         self.com = Command()
-        os.system('clear')
         pause = input("Is your opponent ready? press Enter: ")
         os.system('clear')
 
@@ -33,7 +32,8 @@ class Player:
         except ValueError:
             os.system('clear')
             print('You input an improper value.'
-                  'Please enter an integer between 1 and 10.')
+                  'Please enter an integer between 1 and 10.\n')
+            self.com.print_board(self.com.board)
             self.val_ar()
         else:
             if self.ar in range(10):
@@ -41,7 +41,8 @@ class Player:
             else:
                 os.system('clear')
                 print('Your input was outside the range of the possible'
-                      'inputs. Please enter an integer between 1 and 10.')
+                      'inputs. Please enter an integer between 1 and 10.\n')
+                self.com.print_board(self.com.board)
                 self.val_ar()
 
     def val_ac(self):
@@ -75,14 +76,14 @@ class Player:
         print("\nCommander {}, your ALLY WATERS\n".format(name))
         self.ally.print_board(self.ally.board)
         print('\n\nCommander {},'
-              'where would you like to attack?'.format(name))
+              ' where would you like to attack?'.format(name))
         self.val_ar()
         self.val_ac()
         # val against previous attacks
 
         if (self.ar, self.ac) in self.attack_list:
             print("Commander {},you have already attacked"
-                  "these coordinates.".format(name))
+                  " these coordinates.".format(name))
             self.turn()
         else:
             return self.ar
