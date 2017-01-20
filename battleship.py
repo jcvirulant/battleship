@@ -1,5 +1,6 @@
 from grid import Board
 from character1 import Player
+from collections import Counter
 import sys
 import os
 
@@ -69,8 +70,6 @@ class Game:
             print("Commander {}, you hit {}'s ship!".format(p1.name, p2.name))
             # update com ship coordinates for cleanup
             p1.com.scd[(p1.ar, p1.ac)] = p2.ally.scd[(p1.ar, p1.ac)]
-            print(p1.com.scd)
-            print(p2.ally.scd)
             # update com board
             p1.com.board[p1.ar][p1.ac] = p1.com.HIT
             # update opponent ally board
@@ -81,14 +80,16 @@ class Game:
             pause = input("Continue?: press Enter: ")
             os.system('clear')
             # new player prompt
-            # print(p1.com.scd[(p1.ar, p1.ac)])
-            # print(p1.com.scd.values())
-            # print(self.SHIP_DICT[p2.ally.scd[p1.ar, p1.ac]])
-            # print(sum(1 for p1.com.scd[(p1.ar, p1.ac)] in p1.com.scd.values()))
-            # if sum(1 for p1.com.scd[(p1.ar, p1.ac)] in p1.com.scd.values()) == self.SHIP_DICT[p2.ally.scd[p1.ar, p1.ac]]:
-            #     pause = input("Commander {}, the Pirate {} SUNK your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
-            # else:
-            #     pause = input("Commander {}, the Pirate {} hit your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
+            c = Counter(p1.com.scd.values())
+            if c[p1.com.scd[(p1.ar, p1.ac)]] == self.SHIP_DICT[p1.com.scd[p1.ar, p1.ac]]:
+                for key, value in p1.com.scd.items():
+                    if value == p1.com.scd[(p1.ar, p1.ac)]:
+                        p1.com.board[key[0]][key[1]] = p1.com.SUNK
+                        p2.ally.board[key[0]][key[1]] = p1.com.SUNK
+                pause = input("Commander {}, the Pirate {} SUNK your"
+                " {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
+            else:
+                pause = input("Commander {}, the Pirate {} hit your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
         else:
             print("Commander {}, your attack missed!\n".format(p1.name))
             p1.com.board[p1.ar][p1.ac] = p1.com.MISS
