@@ -5,7 +5,7 @@ import sys
 import os
 
 
-# scd = ship_coordinates_dict - This is used to keep track of the ship names and where th
+# scd = ship_coordinates_dict
 # ar/ac = attack_row/column
 # pr/pc = placement_row/column
 
@@ -13,7 +13,7 @@ class Game:
 
     index = 0
 
-    SHIP_DICT = {
+    SD = {
         "Aircraft Carrier": 5,
         "Battleship": 4,
         "Submarine": 3,
@@ -66,7 +66,7 @@ class Game:
         # val coordinates against opponent ship dict
         # - requires both instances of player (ships)
         if ((p1.ar, p1.ac)) in p2.ally.scd:
-            # report to player the outcome of the attack and record for further reference
+            # report attack and record for further reference
             print("Commander {}, you hit {}'s ship!".format(p1.name, p2.name))
             # update com ship coordinates for cleanup
             p1.com.scd[(p1.ar, p1.ac)] = p2.ally.scd[(p1.ar, p1.ac)]
@@ -81,15 +81,21 @@ class Game:
             os.system('clear')
             # new player prompt
             c = Counter(p1.com.scd.values())
-            if c[p1.com.scd[(p1.ar, p1.ac)]] == self.SHIP_DICT[p1.com.scd[p1.ar, p1.ac]]:
+            if c[p1.com.scd[(p1.ar, p1.ac)]] == self.SD[
+                        p1.com.scd[p1.ar, p1.ac]]:
                 for key, value in p1.com.scd.items():
                     if value == p1.com.scd[(p1.ar, p1.ac)]:
                         p1.com.board[key[0]][key[1]] = p1.com.SUNK
                         p2.ally.board[key[0]][key[1]] = p1.com.SUNK
-                pause = input("Commander {}, the Pirate {} SUNK your"
-                " {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
+                pause = input("Commander {},"
+                              " the Pirate {} SUNK your {}!\nPress Enter to"
+                              " coninue.".format(
+                                p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
             else:
-                pause = input("Commander {}, the Pirate {} hit your {}!\nPress Enter to coninue.".format(p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
+                pause = input("Commander {},"
+                              " the Pirate {} hit your {}!\nPress Enter to"
+                              " coninue.".format(
+                                p2.name, p1.name, p2.ally.scd[p1.ar, p1.ac]))
         else:
             print("Commander {}, your attack missed!\n".format(p1.name))
             p1.com.board[p1.ar][p1.ac] = p1.com.MISS
@@ -97,7 +103,9 @@ class Game:
             p1.com.print_board(p1.com.board)
             pause = input("Continue?: press Enter: ")
             os.system('clear')
-            pause = input("Commander {}, the Pirate {} missed!\nPress Enter to coninue.".format(p2.name, p1.name))
+            pause = input("Commander {},"
+                          " the Pirate {} missed!\nPress Enter to"
+                          " coninue.".format(p2.name, p1.name))
         # record attack for validation against future attacks
         p1.attack_list.append((p1.ar, p1.ac))
 

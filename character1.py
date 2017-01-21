@@ -25,7 +25,6 @@ class Player:
         pause = input("Is your opponent ready? press Enter: ")
         os.system('clear')
 
-
     def val_ar(self):
         try:
             self.ar = int(input('Row Number: ')) - 1
